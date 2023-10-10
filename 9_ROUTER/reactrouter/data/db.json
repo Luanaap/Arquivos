@@ -1,0 +1,26 @@
+{
+    "products": [
+      {
+        "id": 1,
+        "name": "Camiseta",
+        "price": 20.00,
+        "description": "Uma camiseta de algodão confortável",
+        "stock": 100
+      },
+      {
+        "id": 2,
+        "name": "Tênis",
+        "price": 80.00,
+        "description": "Um par de tênis esportivos",
+        "stock": 50
+      },
+      {
+        "id": 3,
+        "name": "Mochila",
+        "price": 40.00,
+        "description": "Uma mochila resistente e espaçosa",
+        "stock": 30
+      }
+    ]
+  }
+  
