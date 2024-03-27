@@ -60,22 +60,18 @@ const createUser = async (data) => {
         setLoading(false);
         setError(systemErrorMessage);
     }
-   };
+};
 
-   const logout = () => {
-    checkIfIsCancelled();
-    signOut(auth);
-   }
 
-   const login = async (data) => {
-    checkIfIsCancelled();
+const login = async (data) => {
+   checkIfIsCancelled();
 
-    setLoading(true);
-    setError(false);
+   setLoading(true);
+   setError(false);
 
-    try{
-        await signInWithEmailAndPassword(auth, data.email, data.password);
-    } catch (error){
+try{
+    await signInWithEmailAndPassword(auth, data.email, data.password);
+} catch (error) {
         console.log(error.message);
         console.log(typeof error.message);
         console.log(error.message.includes("user-not"));
@@ -86,7 +82,7 @@ const createUser = async (data) => {
             systemErrorMessage = "Usuário não encontrado";
         } else if(error.message.includes("wrong-password")){
             systemErrorMessage = "Senha incorreta";
-        } else{
+        } else {
             systemErrorMessage = "Ocorreu um erro, por favor tente mais tarde";
         }
 
@@ -94,11 +90,16 @@ const createUser = async (data) => {
 
         setError(systemErrorMessage);
     }
-
      console.log(error);
-
      setLoading(false);
-   };
+};
+
+
+const logout = () => {
+    checkIfIsCancelled();
+    signOut(auth);
+}
+
 
    useEffect(() => {
     return () => setCancelled(true);
@@ -112,5 +113,5 @@ const createUser = async (data) => {
     login, 
     loading, 
    }
-}
+};
 
