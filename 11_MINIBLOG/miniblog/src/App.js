@@ -14,6 +14,7 @@ import { useAuthentication } from './hooks/useAuthentication';
 import CreatePost from './pages/CreatePost/CreatePost';
 import { Navigate } from "react-router-dom";
 import Dashboard from './pages/Dashboard/Dashboard';
+import Search from './pages/Search/Search';
 
 function App() {
   const [user, setUser] = useState(undefined);
@@ -39,6 +40,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>} />
           <Route path="/about" element={<About/>}/>
+          <Route path="/search" element={<Search/>}/>
           <Route path="/posts/create" element={user ? <CreatePost/> : <Navigate to="/login" />}/> 
           <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />          
           <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />

@@ -1,17 +1,55 @@
 import React from 'react'
 import styles from './createPost.module.css';
-
 import { useState } from "react";
+import { userInsertDocument } from '../../hooks/useInsertDocument';
+import { useAuthValue } from '../../context/AuthContext';
+import { useNavigate} from "react-router-dom";
+
 
 const CreatePost = () => {
-  const [title, setTitle] = useState("")
-  const [image, setImage] = useState("")
-  const [body, setBody] = useState("")
-  const [tags, setTags] = useState("")
-  const [formError, setFormError] = useState("")
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState("");
+  const [body, setBody] = useState("");
+  const [tags, setTags] = useState("");
+  const [formError, setFormError] = useState("");
+
+  const { user} = useAuthValue();
+  const { insertDocument, response} = userInsertDocument("posts");
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => { 
     e.preventDefault();
+    setFormError("")
+
+    //validate image URL
+    try{
+      new URL(image);
+    } catch (error){
+      setFormError("A imagem precisa ser uma URL");
+    }
+
+    //criar o array de tags
+    const tagsArray = tags.split(",").map((tag) => tag.trim().toLowerCase());
+
+    //checar todos os valores
+    if(!title || !image || !tags || !body ) {
+      setFormError("Por favor, preencha todos os campos!");
+    }
+
+    if(formError) return;
+
+    insertDocument({
+      title,
+      image, 
+      body, 
+      tagsArray,
+      uid: user.uid,
+      createdBy: user.displayName
+    });
+
+    //redirect to home page
+    navigate("/");
   }
 
 
@@ -58,14 +96,12 @@ const CreatePost = () => {
             value={tags}
             ></input>
           </label>
-          <button className="btn">Cadastrar</button>
-          {/* {!loading &&  <button className="btn">
-                Entrar
-              </button>}
-              {loading &&  <button className="btn" disable>
+          {!response.loading && <button className="btn">Cadastrar</button>}
+              {response.loading &&  <button className="btn" disable>
                 Aguarde...
               </button>}
-              {error && <p className="error">{error}</p>} */}
+              {response.error && <p className="error">{response.error}</p>}
+              {formError && <p className="error">{formError}</p>}
         </form>
     </div>
   )
